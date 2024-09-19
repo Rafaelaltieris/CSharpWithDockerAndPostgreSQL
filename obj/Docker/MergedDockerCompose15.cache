@@ -1,0 +1,65 @@
+name: dockercompose16541014949147491290
+services:
+  dockerwithpostgresql:
+    build:
+      context: C:\Users\Professor.SB-1491264\Desktop\DockerWithPostgreSql
+      dockerfile: DockerWithPostgreSql/Dockerfile
+    container_name: dockerwithpostgresql.database
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ASPNETCORE_HTTPS_PORTS: "8081"
+    image: dockerwithpostgresql
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 6000
+        published: "6000"
+        protocol: tcp
+      - mode: ingress
+        target: 6001
+        published: "6001"
+        protocol: tcp
+      - mode: ingress
+        target: 8080
+        protocol: tcp
+      - mode: ingress
+        target: 8081
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: C:\Users\Professor.SB-1491264\AppData\Roaming/Microsoft/UserSecrets
+        target: /home/app/.microsoft/usersecrets
+        read_only: true
+        bind:
+          create_host_path: true
+      - type: bind
+        source: C:\Users\Professor.SB-1491264\AppData\Roaming/ASP.NET/Https
+        target: /home/app/.aspnet/https
+        read_only: true
+        bind:
+          create_host_path: true
+  dockerwithpostgresql.docker:
+    container_name: dockerwithpostgresql.docker
+    environment:
+      'POSTGRES_DB ': ' nomedobanco'
+      'POSTGRES_PASSWORD ': ' nomedobanco'
+      'POSTGRES_USER ': ' nomedobanco'
+    image: postgres:latest
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 5432
+        published: "5432"
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: C:\Users\Professor.SB-1491264\Desktop\DockerWithPostgreSql\.container\project
+        target: /var/lib/postgresql/data
+        bind:
+          create_host_path: true
+networks:
+  default:
+    name: dockercompose16541014949147491290_default

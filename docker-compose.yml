@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  dockerwithpostgresql:
+    build:
+      context: .
+      dockerfile: DockerWithPostgreSql/Dockerfile
+    container_name: dockerwithpostgresql
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: products
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./.containers/postgres-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
